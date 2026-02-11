@@ -12,8 +12,9 @@ const REQUEST_TIMEOUT_MS = 30000;
  * @throws {Error} On network error, non-2xx, or invalid JSON
  */
 export async function sendMessage(text) {
-  // In development, use relative URL so the CRA proxy forwards to the API (avoids CORS)
-  const baseUrl = DEFAULT_BASE_URL;
+  // Prefer relative /api/message so dev (CRA proxy) and prod (Vercel rewrites) avoid CORS/mixed-content.
+  // Set REACT_APP_API_BASE_URL to an absolute HTTPS URL to call the API directly (e.g. if no rewrites).
+  const baseUrl = process.env.REACT_APP_API_BASE_URL || '';
   const url = baseUrl ? `${baseUrl.replace(/\/$/, '')}/api/message` : '/api/message';
 
   const controller = new AbortController();
