@@ -3,7 +3,6 @@
  * @see .env.example for REACT_APP_API_BASE_URL
  */
 
-const DEFAULT_BASE_URL = 'http://103.20.90.115';
 const REQUEST_TIMEOUT_MS = 30000;
 
 /**
