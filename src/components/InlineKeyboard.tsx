@@ -17,7 +17,20 @@ export const InlineKeyboard: React.FC<InlineKeyboardProps> = ({
   onAction,
   disabled = false,
 }) => {
+  // Debug logging
+  if (process.env.NODE_ENV === 'development') {
+    console.log('InlineKeyboard - Rendering:', {
+      hasKeyboard: !!keyboard,
+      hasInlineKeyboard: !!keyboard?.inline_keyboard,
+      rows: keyboard?.inline_keyboard?.length || 0,
+      keyboard,
+    });
+  }
+
   if (!keyboard?.inline_keyboard || keyboard.inline_keyboard.length === 0) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('InlineKeyboard - No keyboard data to render');
+    }
     return null;
   }
 
@@ -27,7 +40,7 @@ export const InlineKeyboard: React.FC<InlineKeyboardProps> = ({
   };
 
   return (
-    <div className="inline-keyboard-container">
+    <div className="inline-keyboard-container" data-testid="inline-keyboard">
       {keyboard.inline_keyboard.map((row, rowIndex) => (
         <div key={rowIndex} className="inline-keyboard-row">
           {row.map((button) => (

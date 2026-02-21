@@ -167,7 +167,7 @@ const ChatScreen = ({ messages = [], setMessages }) => {
       </main>
 
       <div className="input-section">
-        <div className="quick-actions">
+        {/* <div className="quick-actions">
           <button
             type="button"
             className="quick-action-btn"
@@ -192,7 +192,7 @@ const ChatScreen = ({ messages = [], setMessages }) => {
           >
             Dosage info
           </button>
-        </div>
+        </div> */}
         <div className="input-container">
           <button type="button" className="input-icon-btn" aria-label="Attach file">
             <span className="material-symbols-outlined">attach_file</span>

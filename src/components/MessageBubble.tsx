@@ -23,7 +23,19 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
 }) => {
   const isUser = message.role === 'user';
   const formattedContent = parseTelegramMarkdown(message.content);
+  // Only show keyboard on latest assistant message (FE_INTEGRATION_GUIDE §4)
   const showKeyboard = !isUser && isLatest && message.keyboard;
+
+  // Debug logging (remove in production)
+  if (process.env.NODE_ENV === 'development' && message.keyboard) {
+    console.log('MessageBubble - Keyboard detected:', {
+      isUser,
+      isLatest,
+      hasKeyboard: !!message.keyboard,
+      showKeyboard,
+      keyboard: message.keyboard,
+    });
+  }
 
   // Format timestamp
   const formatTime = (timestamp: string): string => {
@@ -44,9 +56,9 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
     >
       <div className={`message-bubble ${isUser ? 'message-user' : 'message-ai'}`}>
         <div className="message-content">{formattedContent}</div>
-        {showKeyboard && (
+        {showKeyboard && message.keyboard && (
           <InlineKeyboard
-            keyboard={message.keyboard!}
+            keyboard={message.keyboard}
             onAction={onAction}
             disabled={disabled}
           />

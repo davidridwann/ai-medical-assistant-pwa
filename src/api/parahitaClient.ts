@@ -162,7 +162,26 @@ export class ParahitaClient {
 
       const text = typeof data?.text === 'string' ? data.text.replace(/\\n/g, '\n') : '';
       const keyboard = data?.keyboard;
-      return { text, ...(keyboard && { keyboard }) };
+      
+      // Debug logging (remove in production)
+      if (process.env.NODE_ENV === 'development' && keyboard) {
+        console.log('ParahitaClient - Received keyboard:', {
+          hasKeyboard: !!keyboard,
+          hasInlineKeyboard: !!keyboard?.inline_keyboard,
+          rows: keyboard?.inline_keyboard?.length || 0,
+          keyboard,
+        });
+      }
+      
+      // Validate keyboard structure
+      const validKeyboard = keyboard && 
+        typeof keyboard === 'object' && 
+        Array.isArray(keyboard.inline_keyboard) &&
+        keyboard.inline_keyboard.length > 0
+          ? keyboard
+          : undefined;
+      
+      return { text, ...(validKeyboard && { keyboard: validKeyboard }) };
     } catch (err) {
       clearTimeout(timer);
       if (err instanceof ParahitaApiError) throw err;

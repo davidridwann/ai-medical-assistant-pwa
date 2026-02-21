@@ -159,7 +159,7 @@ const WelcomeScreen = ({ messages, setMessages, onStartChat }) => {
       </main>
 
       <div className="input-section">
-        <div className="quick-actions">
+        {/* <div className="quick-actions">
           <button
             type="button"
             className="quick-action-btn"
@@ -176,7 +176,7 @@ const WelcomeScreen = ({ messages, setMessages, onStartChat }) => {
           >
             Check compatibility
           </button>
-        </div>
+        </div> */}
         <div className="input-container">
           <button type="button" className="input-icon-btn">
             <span className="material-symbols-rounded">link</span>
