@@ -36,14 +36,6 @@ interface SpeechRecognitionAlternative {
   confidence: number;
 }
 
-declare var SpeechRecognition: {
-  new (): SpeechRecognitionInterface;
-} | undefined;
-
-declare var webkitSpeechRecognition: {
-  new (): SpeechRecognitionInterface;
-} | undefined;
-
 interface ChatScreenProps {
   baseUrl?: string;
   userId?: number;
