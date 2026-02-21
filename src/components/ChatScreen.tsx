@@ -4,7 +4,7 @@ import { MessageBubble } from './MessageBubble';
 import './ChatScreen.css';
 
 // Type definitions for Web Speech API
-interface SpeechRecognition extends EventTarget {
+interface SpeechRecognitionInterface extends EventTarget {
   continuous: boolean;
   interimResults: boolean;
   lang: string;
@@ -37,12 +37,12 @@ interface SpeechRecognitionAlternative {
 }
 
 declare var SpeechRecognition: {
-  new (): SpeechRecognition;
-};
+  new (): SpeechRecognitionInterface;
+} | undefined;
 
 declare var webkitSpeechRecognition: {
-  new (): SpeechRecognition;
-};
+  new (): SpeechRecognitionInterface;
+} | undefined;
 
 interface ChatScreenProps {
   baseUrl?: string;
@@ -63,7 +63,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ baseUrl, userId }) => {
   const [isListening, setIsListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<SpeechRecognitionInterface | null>(null);
   const sendTextRef = useRef<((text: string) => void) | null>(null);
 
   const scrollToBottom = useCallback(() => {
@@ -76,11 +76,11 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ baseUrl, userId }) => {
 
   // Initialize speech recognition
   useEffect(() => {
-    const SpeechRecognition =
+    const SpeechRecognitionClass =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    setSpeechSupported(!!SpeechRecognition);
-    if (SpeechRecognition) {
-      const recognition = new SpeechRecognition();
+    setSpeechSupported(!!SpeechRecognitionClass);
+    if (SpeechRecognitionClass) {
+      const recognition = new SpeechRecognitionClass();
       recognition.continuous = false;
       recognition.interimResults = false;
       recognition.lang = 'id-ID';

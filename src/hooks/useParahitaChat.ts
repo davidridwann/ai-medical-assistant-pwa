@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react';
-import { ParahitaClient, ParahitaApiError } from '../api/parahitaClient';
+import { ParahitaClient } from '../api/parahitaClient';
 import { SessionManager } from '../utils/sessionManager';
 import type { ChatMessage, InlineKeyboard } from '../types/parahita';
 
@@ -9,10 +9,8 @@ export interface UseParahitaChatOptions {
   storageKey?: string;
 }
 
-const DEFAULT_STORAGE_KEY = 'parahita_chat_id';
-
 export function useParahitaChat(options: UseParahitaChatOptions = {}) {
-  const { baseUrl = '', userId, storageKey = DEFAULT_STORAGE_KEY } = options;
+  const { baseUrl = '', userId } = options;
   const client = useMemo(() => new ParahitaClient(baseUrl), [baseUrl]);
   const [chatId, setChatId] = useState(() => SessionManager.getChatId());
   const [messages, setMessages] = useState<ChatMessage[]>([]);

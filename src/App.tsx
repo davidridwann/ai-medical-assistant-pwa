@@ -15,10 +15,6 @@ function App() {
     setShowChat(true);
   };
 
-  const handleBackToWelcome = () => {
-    setShowChat(false);
-  };
-
   return (
     <div className="App">
       {showChat ? (

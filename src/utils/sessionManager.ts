@@ -1,4 +1,4 @@
-import { generateChatId, loadOrCreateChatId, resetChatId } from '../api/parahitaClient';
+import { loadOrCreateChatId, resetChatId } from '../api/parahitaClient';
 import type { SessionActivity } from '../types/parahita';
 
 const CLIENT_SESSION_TTL_MS = 55 * 60 * 1000; // 55 minutes (5 min buffer before server TTL of 60 min)

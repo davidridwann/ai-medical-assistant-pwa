@@ -222,7 +222,9 @@ export class ParahitaClient {
 
         // Wait before retrying (exponential backoff)
         if (attempt < this.retryConfig.maxRetries) {
-          await new Promise((resolve) => setTimeout(resolve, delay));
+          // Capture delay value to avoid unsafe reference in closure
+          const currentDelay = delay;
+          await new Promise((resolve) => setTimeout(resolve, currentDelay));
           delay = Math.min(
             delay * this.retryConfig.backoffMultiplier,
             this.retryConfig.maxDelayMs
