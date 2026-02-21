@@ -1,0 +1,63 @@
+.inline-keyboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  width: 100%;
+}
+
+.inline-keyboard-row {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.inline-keyboard-button {
+  flex: 1;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--sage-600, #4d6a63);
+  background: white;
+  border: 1px solid var(--sage-200, #c9d9d5);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 2.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.inline-keyboard-button:hover:not(:disabled) {
+  background: var(--sage-50, #f4f7f6);
+  border-color: var(--sage-400, #81a49c);
+  color: var(--sage-900, #1a2e2a);
+}
+
+.inline-keyboard-button:active:not(:disabled) {
+  transform: scale(0.98);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.inline-keyboard-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f5f5f5;
+  color: #999;
+}
+
+.inline-keyboard-button:focus-visible {
+  outline: 2px solid var(--sage-400, #81a49c);
+  outline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .inline-keyboard-button {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    min-height: 2.25rem;
+  }
+}

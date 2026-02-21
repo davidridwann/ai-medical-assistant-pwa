@@ -1,0 +1,22 @@
+/* MessageBubble styles are mostly inherited from ChatScreen.css */
+/* Additional styles if needed for message-specific elements */
+
+.message-content {
+  word-break: break-word;
+  line-height: 1.625;
+}
+
+.message-content strong {
+  font-weight: 700;
+  color: inherit;
+}
+
+.message-content em {
+  font-style: italic;
+  color: inherit;
+}
+
+.message-content br {
+  display: block;
+  margin: 0.25rem 0;
+}

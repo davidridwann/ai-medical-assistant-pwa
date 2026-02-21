@@ -463,6 +463,63 @@
   cursor: not-allowed;
 }
 
+.welcome-message {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--sage-500);
+  font-size: 0.875rem;
+}
+
+.welcome-message p {
+  margin: 0;
+}
+
+.chat-error {
+  font-size: 0.8125rem;
+  color: #b91c1c;
+  background: #fef2f2;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  border: 1px solid #fecaca;
+}
+
+.error-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.error-retry-btn {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #b91c1c;
+  background: white;
+  border: 1px solid #fecaca;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.error-retry-btn:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-container form {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+}
 
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
