@@ -30,13 +30,16 @@ export class ParahitaApiError extends Error {
 
 function getBaseUrl(): string {
   let baseUrl = process.env.REACT_APP_API_BASE_URL ?? '';
-  if (
-    typeof window !== 'undefined' &&
-    window.location?.protocol === 'https:' &&
-    baseUrl.toLowerCase().startsWith('http:')
-  ) {
-    baseUrl = '';
+  
+  // Always use relative paths when on HTTPS to avoid mixed content blocking
+  // This allows Vercel rewrites (vercel.json) to proxy the request
+  if (typeof window !== 'undefined' && window.location?.protocol === 'https:') {
+    // Force relative paths on HTTPS - Vercel will proxy via rewrites
+    return '';
   }
+  
+  // For HTTP (local development), use the baseUrl if provided
+  // Otherwise return empty string to use relative paths (package.json proxy)
   return baseUrl ? baseUrl.replace(/\/$/, '') : '';
 }
 
