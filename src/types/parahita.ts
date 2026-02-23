@@ -21,9 +21,21 @@ export interface InlineKeyboard {
   inline_keyboard: InlineButton[][];
 }
 
+export interface Promo {
+  nama_pemeriksaan: string; // Package examination name
+  nama_alias: string; // Promo alias/name
+  banner: string; // URL or base64 image
+  tgl_mulai_promo: string; // Promo start date (ISO date string)
+  tgl_selesai_promo: string; // Promo end date (ISO date string)
+}
+
 export interface ParahitaResponse {
   text: string;
   keyboard?: InlineKeyboard;
+  data?: {
+    promos?: Promo[];
+    [key: string]: any;
+  };
 }
 
 export type ActionType =
@@ -42,6 +54,10 @@ export interface ChatMessage {
   role: "user" | "assistant";
   content: string;
   keyboard?: InlineKeyboard;
+  data?: {
+    promos?: Promo[];
+    [key: string]: any;
+  };
   timestamp: string;
 }
 

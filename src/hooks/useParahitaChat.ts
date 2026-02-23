@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react';
 import { ParahitaClient } from '../api/parahitaClient';
 import { SessionManager } from '../utils/sessionManager';
-import type { ChatMessage, InlineKeyboard } from '../types/parahita';
+import type { ChatMessage, InlineKeyboard, ParahitaResponse } from '../types/parahita';
 
 export interface UseParahitaChatOptions {
   baseUrl?: string;
@@ -38,7 +38,7 @@ export function useParahitaChat(options: UseParahitaChatOptions = {}) {
   }, []);
 
   const addMessage = useCallback(
-    (role: 'user' | 'assistant', content: string, keyboard?: InlineKeyboard) => {
+    (role: 'user' | 'assistant', content: string, keyboard?: InlineKeyboard, data?: ParahitaResponse['data']) => {
       setMessages((prev) => [
         ...prev,
         {
@@ -46,6 +46,7 @@ export function useParahitaChat(options: UseParahitaChatOptions = {}) {
           role,
           content,
           ...(keyboard && { keyboard }),
+          ...(data && { data }),
           timestamp: new Date().toISOString(),
         },
       ]);
@@ -79,7 +80,7 @@ export function useParahitaChat(options: UseParahitaChatOptions = {}) {
         const res = await client.sendMessage(trimmed, chatId, userId);
         SessionManager.touchActivity();
         lastActivityRef.current = Date.now();
-        addMessage('assistant', res.text, res.keyboard);
+        addMessage('assistant', res.text, res.keyboard, res.data);
       } catch (err) {
         const errorMessage = ParahitaClient.getErrorMessage(err);
         setError(errorMessage);
@@ -120,7 +121,7 @@ export function useParahitaChat(options: UseParahitaChatOptions = {}) {
           setChatId(newActivity.chatId);
           setMessages([]);
         }
-        addMessage('assistant', res.text, res.keyboard);
+        addMessage('assistant', res.text, res.keyboard, res.data);
         setRetryCount(0);
       } catch (err) {
         const errorMessage = ParahitaClient.getErrorMessage(err);

@@ -165,6 +165,7 @@ export class ParahitaClient {
 
       const text = typeof data?.text === 'string' ? data.text.replace(/\\n/g, '\n') : '';
       const keyboard = data?.keyboard;
+      const responseData = data?.data;
       
       // Debug logging (remove in production)
       if (process.env.NODE_ENV === 'development' && keyboard) {
@@ -184,7 +185,11 @@ export class ParahitaClient {
           ? keyboard
           : undefined;
       
-      return { text, ...(validKeyboard && { keyboard: validKeyboard }) };
+      return { 
+        text, 
+        ...(validKeyboard && { keyboard: validKeyboard }),
+        ...(responseData && { data: responseData }),
+      };
     } catch (err) {
       clearTimeout(timer);
       if (err instanceof ParahitaApiError) throw err;

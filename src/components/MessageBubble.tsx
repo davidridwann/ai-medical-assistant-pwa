@@ -2,6 +2,7 @@ import React from 'react';
 import type { ChatMessage } from '../types/parahita';
 import { parseTelegramMarkdown } from '../utils/telegramMarkdown';
 import { InlineKeyboard } from './InlineKeyboard';
+import { PromoSlide } from './PromoSlide';
 import './MessageBubble.css';
 
 interface MessageBubbleProps {
@@ -26,6 +27,15 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   // Only show keyboard on latest assistant message (FE_INTEGRATION_GUIDE §4)
   const showKeyboard = !isUser && isLatest && message.keyboard;
 
+  // Check if TO_FRONT_OFFICE action is present in keyboard buttons
+  const hasFrontOfficeAction = showKeyboard && message.keyboard?.inline_keyboard?.some(
+    row => row.some(button => button.callback_data === 'TO_FRONT_OFFICE')
+  );
+
+  // Check if promos are available
+  const promos = message.data?.promos;
+  const showPromos = !isUser && isLatest && hasFrontOfficeAction && promos && promos.length > 0;
+
   // Debug logging (remove in production)
   if (process.env.NODE_ENV === 'development' && message.keyboard) {
     console.log('MessageBubble - Keyboard detected:', {
@@ -33,6 +43,9 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
       isLatest,
       hasKeyboard: !!message.keyboard,
       showKeyboard,
+      hasFrontOfficeAction,
+      hasPromos: !!promos,
+      promosCount: promos?.length || 0,
       keyboard: message.keyboard,
     });
   }
@@ -62,6 +75,9 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
             onAction={onAction}
             disabled={disabled}
           />
+        )}
+        {showPromos && promos && (
+          <PromoSlide promos={promos} />
         )}
       </div>
       <span className="message-time" aria-label={`Sent at ${formatTime(message.timestamp)}`}>
