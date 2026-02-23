@@ -86,11 +86,11 @@ export const PromoSlide: React.FC<PromoSlideProps> = ({ promos }) => {
           </div>
 
           <div className="promo-info">
-            {currentPromo.nama_pemeriksaan && (
-              <h3 className="promo-title">{currentPromo.nama_pemeriksaan}</h3>
-            )}
             {currentPromo.nama_alias && (
-              <p className="promo-alias">{currentPromo.nama_alias}</p>
+              <h3 className="promo-title">{currentPromo.nama_alias}</h3>
+            )}
+            {currentPromo.nama_pemeriksaan && (
+              <p className="promo-alias">{currentPromo.nama_pemeriksaan}</p>
             )}
           </div>
         </div>
