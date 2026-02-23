@@ -1,22 +1,21 @@
 import React, { useState, useRef, useEffect, useCallback, FormEvent } from 'react';
-import { useParahitaChat } from '../hooks/useParahitaChat';
 import { MessageBubble } from './MessageBubble';
+import type { ChatProps } from '../types/chatProps';
 import './WelcomeScreen.css';
 
 interface WelcomeScreenProps {
-  baseUrl?: string;
-  userId?: number;
+  chatProps: ChatProps;
   onStartChat: () => void;
 }
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ baseUrl, userId, onStartChat }) => {
+const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ chatProps, onStartChat }) => {
   const {
     messages,
     sendMessage,
     sendAction,
     isLoading,
     error,
-  } = useParahitaChat({ baseUrl, userId });
+  } = chatProps;
 
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);

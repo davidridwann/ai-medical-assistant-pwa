@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParahitaChat } from './hooks/useParahitaChat';
 import WelcomeScreen from './components/WelcomeScreen';
 import ChatScreen from './components/ChatScreen';
 import './App.css';
@@ -11,6 +12,9 @@ function App() {
   // Optional: Get userId from auth context or localStorage if available
   const userId = undefined; // Can be enhanced later with auth
 
+  // Lift chat state to App level so both screens share the same state
+  const chatState = useParahitaChat({ baseUrl, userId });
+
   const handleStartChat = () => {
     setShowChat(true);
   };
@@ -18,9 +22,9 @@ function App() {
   return (
     <div className="App">
       {showChat ? (
-        <ChatScreen baseUrl={baseUrl} userId={userId} />
+        <ChatScreen chatProps={chatState} />
       ) : (
-        <WelcomeScreen baseUrl={baseUrl} userId={userId} onStartChat={handleStartChat} />
+        <WelcomeScreen chatProps={chatState} onStartChat={handleStartChat} />
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, FormEvent } from 'react';
-import { useParahitaChat } from '../hooks/useParahitaChat';
 import { MessageBubble } from './MessageBubble';
+import type { ChatProps } from '../types/chatProps';
 import './ChatScreen.css';
 
 // Type definitions for Web Speech API
@@ -37,11 +37,10 @@ interface SpeechRecognitionAlternative {
 }
 
 interface ChatScreenProps {
-  baseUrl?: string;
-  userId?: number;
+  chatProps: ChatProps;
 }
 
-const ChatScreen: React.FC<ChatScreenProps> = ({ baseUrl, userId }) => {
+const ChatScreen: React.FC<ChatScreenProps> = ({ chatProps }) => {
   const {
     messages,
     sendMessage,
@@ -49,7 +48,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ baseUrl, userId }) => {
     isLoading,
     error,
     resetChat,
-  } = useParahitaChat({ baseUrl, userId });
+  } = chatProps;
 
   const [input, setInput] = useState('');
   const [isListening, setIsListening] = useState(false);
