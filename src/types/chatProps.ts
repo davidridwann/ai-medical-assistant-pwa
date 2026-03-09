@@ -8,6 +8,7 @@ export interface ChatProps {
   messages: ChatMessage[];
   sendMessage: (text: string) => Promise<void>;
   sendAction: (callbackData: string) => Promise<void>;
+  uploadXrayImage: (file: File) => Promise<void>;
   isLoading: boolean;
   error: string | null;
   resetChat: () => void;

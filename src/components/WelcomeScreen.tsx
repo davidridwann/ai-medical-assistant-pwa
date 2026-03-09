@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, FormEvent } from 'react';
 import { MessageBubble } from './MessageBubble';
+import { ImageUploadButton } from './ImageUploadButton';
 import type { ChatProps } from '../types/chatProps';
 import './WelcomeScreen.css';
 
@@ -15,6 +16,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ chatProps, onStartChat })
     sendAction,
     isLoading,
     error,
+    uploadXrayImage,
   } = chatProps;
 
   const [input, setInput] = useState('');
@@ -138,9 +140,11 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ chatProps, onStartChat })
 
       <div className="input-section">
         <form onSubmit={handleInputSubmit} className="input-container">
-          <button type="button" className="input-icon-btn" aria-label="Link" disabled={isLoading}>
-            <span className="material-symbols-rounded">link</span>
-          </button>
+          <ImageUploadButton
+            onFileSelect={uploadXrayImage}
+            disabled={isLoading}
+            isLoading={isLoading}
+          />
           <input
             className="welcome-input"
             type="text"

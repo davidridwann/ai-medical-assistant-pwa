@@ -3,6 +3,7 @@ import type { ChatMessage } from '../types/parahita';
 import { parseTelegramMarkdown } from '../utils/telegramMarkdown';
 import { InlineKeyboard } from './InlineKeyboard';
 import { PromoSlide } from './PromoSlide';
+import { XrayResult } from './XrayResult';
 import './MessageBubble.css';
 
 interface MessageBubbleProps {
@@ -35,6 +36,10 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
   // Check if promos are available
   const promos = message.data?.promos;
   const showPromos = !isUser && isLatest && hasFrontOfficeAction && promos && promos.length > 0;
+
+  // Check if X-ray analysis is available
+  const xrayAnalysis = message.data?.xrayAnalysis;
+  const showXray = !isUser && xrayAnalysis;
 
   // Debug logging (remove in production)
   if (process.env.NODE_ENV === 'development' && message.keyboard) {
@@ -78,6 +83,9 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
         )}
         {showPromos && promos && (
           <PromoSlide promos={promos} />
+        )}
+        {showXray && xrayAnalysis && (
+          <XrayResult analysis={xrayAnalysis} />
         )}
       </div>
       <span className="message-time" aria-label={`Sent at ${formatTime(message.timestamp)}`}>

@@ -111,6 +111,45 @@ export class ParahitaClient {
     return this.post('/api/parahita/action', body);
   }
 
+  async uploadXrayImage(file: File): Promise<import('../types/parahita').XrayUploadResponse> {
+    const url = this.baseUrl ? `${this.baseUrl}/api/parahita/xray` : '/api/parahita/xray';
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), this.timeoutMs);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch(url, {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal,
+      });
+      clearTimeout(timer);
+
+      const data = await res.json().catch(() => {
+        throw new ParahitaApiError('Invalid response from server', res.status);
+      });
+
+      if (!res.ok) {
+        const msg = (data?.message ?? data?.detail ?? res.statusText ?? 'Request failed') as string;
+        throw new ParahitaApiError(msg, res.status);
+      }
+
+      return data;
+    } catch (err) {
+      clearTimeout(timer);
+      if (err instanceof ParahitaApiError) throw err;
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        throw new ParahitaApiError(`Request timed out after ${this.timeoutMs}ms`, 0);
+      }
+      throw new ParahitaApiError(
+        err instanceof Error ? err.message : 'Network error',
+        0
+      );
+    }
+  }
+
   /**
    * Check if session has expired based on last activity timestamp
    */

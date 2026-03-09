@@ -1,4 +1,14 @@
-/** Parahita API types (FE_INTEGRATION_GUIDE §2, §10). */
+/**
+ * Parahita API types (FE_INTEGRATION_GUIDE §2, §10).
+ *
+ * API contract (must match backend):
+ * - POST /api/parahita/message  body: MessageRequest  → ParahitaResponse { text, keyboard?, data? }
+ * - POST /api/parahita/action   body: ActionRequest   → ParahitaResponse { text, keyboard?, data? }
+ * - POST /api/parahita/xray     multipart file        → XrayUploadResponse { message, data }
+ *
+ * If message/action "don't work", check: (1) backend has both endpoints, (2) REACT_APP_API_BASE_URL
+ * or proxy points at the API server, (3) CORS allows the PWA origin.
+ */
 
 export interface MessageRequest {
   text: string;
@@ -49,6 +59,32 @@ export type ActionType =
   | "NEW_QUERY"
   | "BACK";
 
+export interface XrayConclusionResponse {
+  kesimpulan: string;
+  hasil: string;
+  confidence_level: string;
+}
+
+export interface XrayPredictionResponse {
+  prediction: string; // "NORMAL" or "ABNORMAL"
+  confidence: number;
+  model_type: string;
+  model_inspection: string;
+  conclusion: XrayConclusionResponse;
+  heatmap_base64: string; // Base64 encoded image with Grad-CAM overlay
+}
+
+export interface XrayAnalysisResult {
+  inspection: 'THORAX_PA' | 'PANORAMIC';
+  prediction: XrayPredictionResponse;
+  aiInterpretation: string; // AI-generated interpretation in Indonesian
+}
+
+export interface XrayUploadResponse {
+  message: string;
+  data: XrayAnalysisResult;
+}
+
 export interface ChatMessage {
   id: string;
   role: "user" | "assistant";
@@ -56,6 +92,7 @@ export interface ChatMessage {
   keyboard?: InlineKeyboard;
   data?: {
     promos?: Promo[];
+    xrayAnalysis?: XrayAnalysisResult;
     [key: string]: any;
   };
   timestamp: string;

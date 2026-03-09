@@ -159,6 +159,50 @@ export function useParahitaChat(options: UseParahitaChatOptions = {}) {
     }
   }, [retryCount, messages]);
 
+  const uploadXrayImage = useCallback(
+    async (file: File) => {
+      if (inflightRef.current) return;
+
+      // Check session expiry before uploading
+      if (SessionManager.isExpired()) {
+        const newActivity = SessionManager.resetSession();
+        setChatId(newActivity.chatId);
+        setMessages([]);
+        setError('Sesi telah berakhir. Silakan unggah gambar lagi.');
+        return;
+      }
+
+      inflightRef.current = true;
+      setError(null);
+      setIsLoading(true);
+      SessionManager.touchActivity();
+      lastActivityRef.current = Date.now();
+
+      // Add user message showing image upload
+      addMessage('user', `Mengunggah gambar X-ray: ${file.name}`);
+
+      try {
+        const res = await client.uploadXrayImage(file);
+        SessionManager.touchActivity();
+        lastActivityRef.current = Date.now();
+
+        // Add assistant message with X-ray analysis
+        addMessage('assistant', res.message, undefined, {
+          xrayAnalysis: res.data,
+        });
+      } catch (err) {
+        const errorMessage = ParahitaClient.getErrorMessage(err);
+        setError(errorMessage);
+        // Remove the user message on error
+        setMessages((prev) => prev.slice(0, -1));
+      } finally {
+        setIsLoading(false);
+        inflightRef.current = false;
+      }
+    },
+    [client, addMessage]
+  );
+
   return {
     messages,
     sendMessage,
@@ -169,5 +213,6 @@ export function useParahitaChat(options: UseParahitaChatOptions = {}) {
     chatId,
     retryCount,
     retryLastAction,
+    uploadXrayImage,
   };
 }

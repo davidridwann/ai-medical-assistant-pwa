@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, FormEvent } from 'react';
 import { MessageBubble } from './MessageBubble';
+import { ImageUploadButton } from './ImageUploadButton';
 import type { ChatProps } from '../types/chatProps';
 import './ChatScreen.css';
 
@@ -48,6 +49,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ chatProps }) => {
     isLoading,
     error,
     resetChat,
+    uploadXrayImage,
   } = chatProps;
 
   const [input, setInput] = useState('');
@@ -225,14 +227,11 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ chatProps }) => {
 
       <div className="input-section">
         <form onSubmit={handleSubmit} className="input-container">
-          <button
-            type="button"
-            className="input-icon-btn"
-            aria-label="Attach file"
+          <ImageUploadButton
+            onFileSelect={uploadXrayImage}
             disabled={isLoading}
-          >
-            <span className="material-symbols-outlined">attach_file</span>
-          </button>
+            isLoading={isLoading}
+          />
           <input
             className="chat-input"
             type="text"
